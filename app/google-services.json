@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "517862508587",
+    "project_id": "drona-1aaa6",
+    "storage_bucket": "drona-1aaa6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517862508587:android:8077d4ec8cabff4ef6826e",
+        "android_client_info": {
+          "package_name": "com.godspeed.drona"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517862508587-vfa2gcumc01ju4fvnpjheh2vbkvq228r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTZEaKSnNKJLGzwB8oxuk52pwg2WnB9Yo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517862508587-vfa2gcumc01ju4fvnpjheh2vbkvq228r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
