@@ -23,6 +23,7 @@
             android:text="Login"
             android:textColor="@color/black"
             android:textSize="30dp"
+            android:textColorHint="@color/dark_grey"
             android:textStyle="bold"></TextView>
 
         <EditText
@@ -30,6 +31,8 @@
             android:background="@drawable/edittext_border"
             android:layout_marginTop="35dp"
             android:padding="15dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/dark_grey"
             android:inputType="number"
             android:maxLines="1"
             android:maxLength="10"
@@ -42,13 +45,17 @@
             android:layout_marginTop="20dp"
             android:padding="15dp"
             android:inputType="textPassword"
+            android:textColor="@color/black"
             android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/dark_grey"
             android:hint="Password"></EditText>
         <CheckBox
+            android:id="@+id/saveCredentials"
             android:text="Save Credentials"
             android:layout_width="match_parent"
+            android:textColor="@color/dark_grey"
             android:layout_height="wrap_content"></CheckBox>
 
         <Button
@@ -57,6 +64,7 @@
             android:layout_marginTop="45dp"
             android:padding="10dp"
             android:text="Login"
+            android:textColor="@color/white"
             android:textSize="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></Button>

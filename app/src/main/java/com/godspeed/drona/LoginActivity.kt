@@ -15,13 +15,13 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.godspeed.drona.models.Login
 import com.godspeed.drona.utils.SharedPrefManager
-import com.godspeed.drona.utils.SharedPrefManager.LOGIN_SCREEN
-import com.godspeed.drona.utils.SharedPrefManager.SCREEN_NAME
+import com.godspeed.drona.utils.SharedPrefManager.*
 import com.godspeed.drona.utils.Utility
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -37,11 +37,13 @@ class LoginActivity : AppCompatActivity() {
     lateinit var tvReset: TextView
     lateinit var btnLogin: Button
     lateinit var progressBar: ProgressBar
+    lateinit var checkBox: CheckBox
     var imei = "";
     private val PHONE_STATE_CODE = 1
     var gotImei = false
     private lateinit var apiInterface: APIInterface
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("StringFormatInvalid")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,9 +77,30 @@ class LoginActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         tvSignUp = findViewById(R.id.tvSignUp)
         tvReset = findViewById(R.id.tvReset)
+        checkBox = findViewById(R.id.saveCredentials)
+
+        var isLogined=SharedPrefManager.read(IS_LOGIN,false)
+
+        if(isLogined==true){
+            etphone.setText(SharedPrefManager.read(LOCAL_USER_ID,""))
+            etPassword.setText(SharedPrefManager.read(LOCAL_USER_PASS,""))
+            checkBox.isChecked=true
+        }
 
         btnLogin.setOnClickListener(View.OnClickListener {
-            if (gotImei == false) {
+            if(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    !Utility.isOnline(this)
+                } else {
+                    TODO("VERSION.SDK_INT < LOLLIPOP")
+                }
+            )
+            {
+                Toast.makeText(
+                    this, "Please check internet connection!",
+                    Toast.LENGTH_LONG
+                ).show();
+            }
+           else if (gotImei == false) {
                 checkImei()
                 Utility.getUniqueIMEIId(this)
                 Toast.makeText(
@@ -108,21 +131,32 @@ class LoginActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<Login>, response: Response<Login>) {
                         progressBar.visibility = View.GONE
                         if (response.body() != null) {
+
                             val user1: Login = response.body()
 
+                            SharedPrefManager.write(SharedPrefManager.LOCAL_USER_ID, etphone.text.trim().toString());
+                            SharedPrefManager.write(SharedPrefManager.LOCAL_USER_PASS, etPassword.text.trim().toString());
                             SharedPrefManager.write(SharedPrefManager.USER_ID, user1.user_id);
                             SharedPrefManager.write(SharedPrefManager.USER_PASS, user1.user_pass);
                             SharedPrefManager.write(SharedPrefManager.WEB_TOKEN, user1.token);
                             SharedPrefManager.write(SharedPrefManager.WEB_TOKEN_ID, user1.token_id);
-                            SharedPrefManager.write(SharedPrefManager.IS_LOGIN, true);
+
+                            if(checkBox.isChecked){
+                                SharedPrefManager.write(SharedPrefManager.IS_LOGIN, true);
+                            }else{
+                                SharedPrefManager.write(SharedPrefManager.IS_LOGIN, false);
+                            }
+
 
                             sendRegistrationToServer(user1.token.toString())
 
                             nextScreen(SharedPrefManager.LOGIN_SCREEN)
+
+
                         } else {
                             Toast.makeText(
                                 applicationContext,
-                                "Something went wrong!",
+                                "Your userid or password is incorrect!",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

@@ -12,16 +12,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class APIClient {
 
     private static Retrofit retrofit = null;
-
+    public static String testingUrl="https://drona.digitalninza.com/drona_backend_7";
+    public static String prodUrl="https://app.dronahub.com";
     static Retrofit getClient() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
+        https://app.dronahub.com/Front/Front_api/get_login_cred
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://drona.digitalninza.com/drona_backend_7/Front/Front_api/")
+                .baseUrl(prodUrl+"/Front/Front_api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

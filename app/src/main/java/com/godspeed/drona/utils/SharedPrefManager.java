@@ -14,8 +14,11 @@ public class SharedPrefManager {
     public static final String WEB_TOKEN_ID = "WEB_TOKEN_ID";
     public static final String TOKEN = "TOKEN";
     public static final String IMEI = "IMEI";
+    public static final String LOCAL_USER_ID = "LOCAL_USER_ID";
     public static final String USER_ID = "USER_ID";
     public static final String USER_PASS = "USER_PASS";
+    public static final String LOCAL_USER_PASS = "LOCAL_USER_PASS";
+    public static final String IS_LOGINED = "IS_LOGINED";
 
     public static final String IS_LOGIN = "IS_LOGIN";
 

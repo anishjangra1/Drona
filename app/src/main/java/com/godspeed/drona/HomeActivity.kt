@@ -2,10 +2,13 @@ package com.godspeed.drona
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.godspeed.drona.utils.SharedPrefManager
 import com.godspeed.drona.utils.SharedPrefManager.SCREEN_NAME
@@ -14,9 +17,11 @@ import com.godspeed.drona.utils.SharedPrefManager.SCREEN_NAME
 class HomeActivity : AppCompatActivity() {
     lateinit var webView: WebView
     lateinit var progressBar: ProgressBar
-    val welcomeUrl="https://drona.digitalninza.com/drona_backend_7/complete"
-    val signUpScreenUrl="https://drona.digitalninza.com/drona_backend_7/signup"
-    val resetScreenUrl="https://drona.digitalninza.com/drona_backend_7/reset"
+    var testingUrl = "https://drona.digitalninza.com/drona_backend_7"
+    var prodUrl = "https://app.dronahub.com"
+    val welcomeUrl=prodUrl+"/drona_backend_7/complete"
+    val signUpScreenUrl=prodUrl+"/signup"
+    val resetScreenUrl=prodUrl+"/reset"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         val token: String = SharedPrefManager.read(SharedPrefManager.WEB_TOKEN, "")
         val user_id: String = SharedPrefManager.read(SharedPrefManager.USER_ID, "")
         val token_id: String = SharedPrefManager.read(SharedPrefManager.WEB_TOKEN_ID, "")
-        var finalUrl =    "https://drona.digitalninza.com/drona_backend_7/Front/Front_api/proceed_api_url/"+token+"/"+user_id+"/"+token_id
+        var finalUrl =    prodUrl+"/Front/Front_api/proceed_api_url/"+token+"/"+user_id+"/"+token_id
         if(signUpScren.contentEquals(SharedPrefManager.SIGN_UP_SCREEN)){
             finalUrl = signUpScreenUrl
         }else if(signUpScren.contentEquals(SharedPrefManager.FORGOT_SCREEN)){
@@ -79,5 +84,19 @@ class HomeActivity : AppCompatActivity() {
             super.onPageFinished(view, url)
             progressBar.visibility = View.GONE
         }
+    }
+
+
+    private var doubleBackToExitPressedOnce = false
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 }
